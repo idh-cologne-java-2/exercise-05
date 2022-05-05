@@ -45,14 +45,10 @@ public class Document implements Iterable<String>{
 	public class StringTokenizerHasMoreTokens {
 		public void main(String[] args) {
 			
-			/**
-			 * Creating a StringTokenizer
-			 */
+			//Creating a StringTokenizer
 			StringTokenizer st = new StringTokenizer("Dracula by Bram Stoker");
 			
-			/**
-			 * Checking and displaying the Tokens
-			 */
+			//Checking and displaying the Tokens
 			while (st.hasMoreTokens()) {
 				System.out.println("The Next token: " + st.nextToken());
 		}
