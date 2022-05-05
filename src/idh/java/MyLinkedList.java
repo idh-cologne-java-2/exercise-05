@@ -17,8 +17,16 @@ public class MyLinkedList<T> implements List<T> {
 	
 	@Override
 	public int size() {
-		// TODO Implement!
-		return 0;
+		if (first == null)
+			return 0;
+		ListElement current = first;
+		int number = 1;
+		
+		while(current.next != null) {
+			number++;
+			current = current.next;
+		}
+		return number;
 	}
 
 	@Override
@@ -27,8 +35,18 @@ public class MyLinkedList<T> implements List<T> {
 	}
 
 	@Override
-	public boolean contains(Object o) {
-		// TODO Implement!
+	public boolean contains(Object o) { //warum nicht funktioniert?
+		if (first == null)
+			return false;
+		ListElement current = first;
+		
+		while(current.next != null) {
+			System.out.println(current.toString());
+				if(current.equals(o)) {
+					return true;
+				}
+			current = current.next;
+		}
 		return false;
 	}
 
@@ -53,9 +71,13 @@ public class MyLinkedList<T> implements List<T> {
 	}
 
 	@Override
-	public Object[] toArray() {
-		// TODO Implement!
-		return null;
+	public Object[] toArray() { //wie implementieren ohne Parameter?
+		Object a[] = new Object[this.size()];
+		int i = 0;
+		for (T t : this) {
+			a[i++] = t;
+		}
+		return a;
 	}
 
 	@Override
@@ -81,9 +103,26 @@ public class MyLinkedList<T> implements List<T> {
 	}
 
 	@Override
-	public boolean remove(Object o) {
-		// TODO: Implement
-		return false;
+	public boolean remove(Object o) { //irgendwie verbindung auf das nächste legen
+		ListElement current = first;
+		ListElement help = null;
+		if(this.contains(o)) {
+			while(current.next != null) {
+				System.out.println(current.toString());
+					if(current.equals(o)) {
+						help = current.next;
+						current = null;
+					}
+				if(help!=null) {
+					current = help;
+				}else {
+					current = current.next;
+				}
+			}
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	@Override
@@ -103,8 +142,10 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
-		// TODO Implement!
-		return false;
+		int zahl = index;
+		for (T t : c) 
+			this.add(zahl++ ,t);
+		return true;
 	}
 
 	@Override
@@ -131,32 +172,84 @@ public class MyLinkedList<T> implements List<T> {
 	}
 
 	@Override
-	public T set(int index, T element) {
-		// TODO: Implement
+	public T set(int index, T element) { //?
+		return getElement(index).value = element;
+	}
+
+	@Override
+	public void add(int index, T element) { //?
+		ListElement newListElement = new ListElement(element);
+		ListElement current = first;
+		ListElement help = null;
+		if (first == null)
+			first = newListElement;
+		else
+			for(int i=0;i<size();i++) {
+				if(i==index) {
+					current.next = help;
+					current.next = newListElement;
+					newListElement.next = help;
+					break;
+				}
+				current = current.next;
+			}
+	}
+
+	@Override
+	public T remove(int index) { //?
+		ListElement current = first;
+		ListElement help = null;
+		if (first == null)
+			first = null;
+		else
+			for(int i=0;i<size();i++) {
+				if(i==index) {
+					current.next = help;
+					current = null;
+					current = help;
+					break;
+				}
+				current = current.next;
+			}
+		
+		
+		
 		return null;
 	}
 
 	@Override
-	public void add(int index, T element) {
-		// TODO: Implement
+	public int indexOf(Object o) {	 //?
+		
+		if (first == null)
+			return -1;
+		ListElement current = first;
+		int number = 1;
+		
+		while(current.next != null) {
+			current = current.next;
+			number++;
+			if(current.equals(o)) {
+				return number;
+			}
+		}
+		return -1;
 	}
 
 	@Override
-	public T remove(int index) {
-		// TODO: Implement
-		return null;
-	}
-
-	@Override
-	public int indexOf(Object o) {
-		// TODO: Implement
-		return 0;
-	}
-
-	@Override
-	public int lastIndexOf(Object o) {
-		// TODO: Implement
-		return 0;
+	public int lastIndexOf(Object o) { //selber wie index of nur mit zurückzählen
+		if (first == null)
+			return -1;
+		ListElement current = first;
+		int number = size();
+		
+		while(current.next != null) {
+			current = current.next;
+			number--;
+			if(current.equals(o)) {
+				return number;
+			}
+		}
+		return -1;
 	}
 
 	@Override
@@ -273,8 +366,9 @@ public class MyLinkedList<T> implements List<T> {
 
 	public static void main(String[] args) {
 		MyLinkedList<String> ll = new MyLinkedList<String>();
-		ll.add("Hallo");
+		ll.add("Hallo"); 
 		ll.add("Welt");
+		//System.out.println(ll.contains("Hallo"));
 		ll.get(0);
 		for (String s : ll) {
 			System.out.println(s);
