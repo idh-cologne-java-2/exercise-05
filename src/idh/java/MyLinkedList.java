@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 
 public class MyLinkedList<T> implements List<T> {
@@ -12,7 +13,7 @@ public class MyLinkedList<T> implements List<T> {
 	 * We only need to store the very first element of our list, 
 	 * because it will now whether there is a next element.
 	 */
-	ListElement first;
+	ListElement first = null;
 	
 	
 	@Override
@@ -164,30 +165,77 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
+		if (first == null) {
+			throw new NoSuchElementException(); 
+		}else {
+			ListElement current = first ; 
+			while(current.next != null && index > 0 ) {
+				current = current.next;  
+				index--; 
+			}
+			if(index == 0)
+			current.value = element; 
+			
+		}
+		
 		
 		return null;
 	}
 
 	@Override
 	public void add(int index, T element) {
-		// TODO: Implement
+		
+		first = new ListElement(element);
 	}
 
 	@Override
 	public T remove(int index) {
+		ListElement current = first;
+		int n = 0; 
+		while(current.next != first) {
+			if(n == index) {
+				current.value = null; 
+				return (T) current; 
+				
+			}
+			
+			n++; 
+			current = current.next; 
+		}
 		// TODO: Implement
 		return null;
 	}
 
 	@Override
 	public int indexOf(Object o) {
-		// TODO: Implement
-		return 0;
+		ListElement current = first;
+		int number = 0; 
+		while(current.next != null) {
+			if( current.value == o) {
+				return number; 
+			}
+			number++; 
+			current = current.next; 
+		}
+			return -1;
+		
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		// TODO: Implement
+		
+		ListElement current = first; 
+		int i= 0 ; 
+		while(current.next != null) {
+			if(current.value == o) {
+				if(current.next.value == o) {
+					return i+1;
+				}
+				return i; 
+			}
+			i++; 
+			 
+		}
 		return 0;
 	}
 
