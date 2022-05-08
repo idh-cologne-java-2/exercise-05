@@ -11,6 +11,7 @@ public class MyLinkedList<T> implements List<T> {
     ListElement first;
     int size = 0;
 
+    //gibt die Größe der Liste zurück
     @Override
     public int size() {
         return size;
@@ -22,6 +23,7 @@ public class MyLinkedList<T> implements List<T> {
         return first == null;
     }
 
+    //fragt, ob ein bestimmtes Object in der Liste enthalten ist
     @Override
     public boolean contains(Object o) {
         for (T t : this) {
@@ -37,6 +39,7 @@ public class MyLinkedList<T> implements List<T> {
         return new Iterator<>() {
             ListElement next = first;
 
+            //gibt nächstes Element, wenn Nächstes nicht gleich null ist
             @Override
             public boolean hasNext() {
                 return next != null;
@@ -96,6 +99,7 @@ public class MyLinkedList<T> implements List<T> {
     public boolean remove(Object toRemove) {
         ListElement previous;
 
+        //Fall, wenn Object am Anfang der Liste entfernt werden soll
         if (first == toRemove) {
             first = first.next;
             size--;
