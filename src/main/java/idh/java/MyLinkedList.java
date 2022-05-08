@@ -19,6 +19,7 @@ public class MyLinkedList<T> implements List<T> {
     }
 
     @Override
+    //falls das erste ListElement nicht existiert, dann ist die Liste leer
     public boolean isEmpty() {
         return first == null;
     }
@@ -86,11 +87,16 @@ public class MyLinkedList<T> implements List<T> {
 
     @Override
     public boolean add(T e) {
+        //neues ListElement der Liste anhängen
         ListElement newListElement = new ListElement(e);
+
+        //an den Anfang der Liste hängen
         if (first == null)
             first = newListElement;
         else
+            //hinten anhängen
             last().next = newListElement;
+        //Größe der Liste erhöhen
         size++;
         return true;
     }
@@ -100,15 +106,18 @@ public class MyLinkedList<T> implements List<T> {
         ListElement previous;
 
         //Fall, wenn Object am Anfang der Liste entfernt werden soll
-        if (first == toRemove) {
+        if (first.value == toRemove) {
             first = first.next;
             size--;
             return true;
         }
+        //Fall 1 abgehandelt, dann ist das 1. Element dann der Previous
         previous = first;
+
         for (int i = 1; i < size; i++) {
+
             ListElement current = previous.next;
-            if (current == toRemove) {
+            if (current.value == toRemove) {
                 previous.next = current.next;
                 size--;
                 return true;
@@ -119,6 +128,7 @@ public class MyLinkedList<T> implements List<T> {
     }
 
     @Override
+    //enhält die Collection c alle Elemente (Objekte) von meiner Liste?
     public boolean containsAll(Collection<?> c) {
         for (Object o : c)
             if (!contains(o))
@@ -127,6 +137,7 @@ public class MyLinkedList<T> implements List<T> {
     }
 
     @Override
+    //Alle Elemente aus der Collection an meine Liste anhängen?
     public boolean addAll(Collection<? extends T> c) {
         for (T t : c)
             this.add(t);
@@ -134,6 +145,7 @@ public class MyLinkedList<T> implements List<T> {
     }
 
     @Override
+    //Alle Elemente aus meiner Collection c an bestimmten Index an meine Liste anhängen?
     public boolean addAll(int index, Collection<? extends T> c) {
 
         for (T t : c) {
@@ -143,6 +155,7 @@ public class MyLinkedList<T> implements List<T> {
     }
 
     @Override
+    //Alle Elemente aus der Liste entfernen, die auch in Collection c sind
     public boolean removeAll(Collection<?> c) {
 
         boolean r = false;
@@ -160,16 +173,20 @@ public class MyLinkedList<T> implements List<T> {
         throw new UnsupportedOperationException();
     }
 
+    //Liste leeren, indem Zeiger des ListElement (first) auf null gesetzt wird
     @Override
     public void clear() {
 
         first = null;
     }
 
+    //Element (T) an bestimmten Index zurückgeben
     @Override
     public T get(int index) {
+
         ListElement current = first;
         for (int i = 0; i < size; i++) {
+
             if (i == index) {
                 return current.value;
             }
@@ -181,6 +198,7 @@ public class MyLinkedList<T> implements List<T> {
 
     @Override
     public T set(int index, T element) {
+        //Element (T) an bestimmter Stelle Index setzen
         ListElement current = first;
 
         for (int i = 0; i < size; i++) {
@@ -201,13 +219,12 @@ public class MyLinkedList<T> implements List<T> {
     @Override
     public void add(int index, T element) {
 
-        if (index== size){
+        if (index == size) {
             add(element);
             return;
         }
 
-        if(index > size)
-        {
+        if (index > size) {
             throw new IndexOutOfBoundsException();
         }
 
@@ -215,16 +232,15 @@ public class MyLinkedList<T> implements List<T> {
 
         ListElement toAdd = new ListElement(element);
 
-        if (index == 0){
+        if (index == 0) {
             first = toAdd;
             first.next = current;
             size++;
             return;
         }
 
-        for(int i = 0; i < size; i++)
-        {
-            if(i==index){
+        for (int i = 0; i < size; i++) {
+            if (i == index) {
                 toAdd.next = current.next;
                 current.next = toAdd;
                 size++;
@@ -236,14 +252,13 @@ public class MyLinkedList<T> implements List<T> {
         }
 
 
-
     }
 
     @Override
     public T remove(int index) {
 
         T ret;
-        if (index == 0){
+        if (index == 0) {
             ret = first.value;
             first = first.next;
             size--;
@@ -256,17 +271,17 @@ public class MyLinkedList<T> implements List<T> {
         current = previous.next;
 
         //fange bei 1 an, da Sonderfall i=0 abgehandelt
-        for(int i = 1; i< size; i++){
+        for (int i = 1; i < size; i++) {
 
-           if(index == i){
-               ret = current.value;
-               previous.next = current.next;
-               size--;
-               return ret;
+            if (index == i) {
+                ret = current.value;
+                previous.next = current.next;
+                size--;
+                return ret;
 
-           }
-           previous = current;
-           current = current.next;
+            }
+            previous = current;
+            current = current.next;
 
         }
         throw new IndexOutOfBoundsException();
@@ -276,32 +291,36 @@ public class MyLinkedList<T> implements List<T> {
 
     @Override
     public int indexOf(Object o) {
+        //Index des erten Vorkommens von o in Liste prüfen
         ListElement listElement = first;
 
-        for (int i = 0; i < size; i++){
-            if(listElement.value.equals(o)){
+        for (int i = 0; i < size; i++) {
+            if (listElement.value.equals(o)) {
                 return i;
             }
             listElement = listElement.next;
         }
-
+        //Return -1 für den Falls dass Object nicht in Liste enthalten ist
         return -1;
     }
 
     @Override
     public int lastIndexOf(Object o) {
 
+        //Index des letzten Vorkommens von o in Liste prüfen
         ListElement listElement = first;
 
+        //Für den Fall das Object nicht in Liste enthalten ist
         int highestOccurrence = -1;
 
-        for (int i = 0; i < size; i++){
-            if(listElement.value.equals(o)){
+        for (int i = 0; i < size; i++) {
+            if (listElement.value.equals(o)) {
                 highestOccurrence = i;
             }
             listElement = listElement.next;
         }
 
+        //Rückgabe des Index des letzten Vorkommens in der Liste
         return highestOccurrence;
     }
 
@@ -429,10 +448,10 @@ public class MyLinkedList<T> implements List<T> {
         ll.add("Hallo");
         ll.add("Welt");
 
-      String st = ll.getElement(0).value;
+        String st = ll.getElement(0).value;
         System.out.println(st);
 
-
+        ll.remove("Welt");
 
         for (String s : ll) {
             System.out.println(s);
