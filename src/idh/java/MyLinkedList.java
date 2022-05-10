@@ -13,12 +13,10 @@ public class MyLinkedList<T> implements List<T> {
 	 * because it will now whether there is a next element.
 	 */
 	ListElement first;
+	int zaehler = 0;
 	
-	
-	@Override
 	public int size() {
-		// TODO Implement!
-		return 0;
+		return zaehler;
 	}
 
 	@Override
@@ -28,7 +26,15 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Implement!
+		ListElement marker = first;
+
+		while (marker.next != null) {
+			if (marker.equals(o)) {
+				return true;
+			}
+			marker = marker.next;
+		}
+
 		return false;
 	}
 
@@ -49,13 +55,27 @@ public class MyLinkedList<T> implements List<T> {
 				return ret;
 			}
 			
+			public T changeNext(Object o) {
+
+				next = (MyLinkedList<T>.ListElement) o;
+				return (T) o;
+			}
+			
 		};
 	}
 
 	@Override
 	public Object[] toArray() {
-		// TODO Implement!
-		return null;
+		ListElement marker = first;
+		Object[] array = new Object[size()];
+
+		for(int i = 0; i < array.length; i++) {
+			array[i] = marker;
+			marker = marker.next;
+		}
+
+		return array;
+
 	}
 
 	@Override
@@ -77,13 +97,21 @@ public class MyLinkedList<T> implements List<T> {
 			first = newListElement;
 		else
 			last().next = newListElement;
+		zaehler++;
 		return true;
 	}
 
 	@Override
 	public boolean remove(Object o) {
-		// TODO: Implement
+		ListElement where = first;
+		while (where.next != null) {
+			if (where == o) {
+				where = null;
+				return true;
+			}
+		}
 		return false;
+		
 	}
 
 	@Override
@@ -132,25 +160,42 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: Implement
+		getElement(index).value = element;
 		return null;
 	}
 
 	@Override
 	public void add(int index, T element) {
-		// TODO: Implement
+		ListElement where = first;
+		
+		for (int i=0; i<index; i++) {
+			if (where.next != null) {
+				where = where.next;
+			}
+		}
+		
+		ListElement newListElement = new ListElement(element);
+		where.next = newListElement;
 	}
 
 	@Override
 	public T remove(int index) {
-		// TODO: Implement
+		getElement(index).value = null;
 		return null;
 	}
 
 	@Override
 	public int indexOf(Object o) {
-		// TODO: Implement
-		return 0;
+		ListElement where = first;
+		int counter = 0;
+		while(where.next != null) {
+			if(where.equals(o)) {
+				return counter;
+			}
+			counter++;
+			where = where.next;
+		}
+		return -1;
 	}
 
 	@Override
@@ -279,5 +324,8 @@ public class MyLinkedList<T> implements List<T> {
 		for (String s : ll) {
 			System.out.println(s);
 		}
+		System.out.println(ll.size());
+		
+		System.out.println(ll.toArray());
 	}
 }
