@@ -17,8 +17,17 @@ public class MyLinkedList<T> implements List<T> {
 	
 	@Override
 	public int size() {
-		// TODO Implement!
-		return 0;
+		if(first == null)
+			return 0;
+		
+		ListElement current = first;
+		int i = 0;
+		
+		while(current.next != null) {
+			i++;
+			current = current.next;
+		}
+		return i;
 	}
 
 	@Override
@@ -28,7 +37,13 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Implement!
+		ListElement current = first; 
+		while(current.next != null) {
+			if(current.equals(o))
+				return true;
+			current = current.next; 
+		}
+		
 		return false;
 	}
 

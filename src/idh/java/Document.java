@@ -3,9 +3,11 @@ package idh.java;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
 
-public class Document {
+public class Document implements Iterable<String>{
 	String documentText;
+	String[] text;
 
 	public static Document readFromFile(File f) throws IOException {
 		FileReader fileReader = new FileReader(f);
@@ -31,6 +33,28 @@ public class Document {
 	
 	public static final void main(String[] args) throws IOException {
 		Document d = Document.readFromFile(new File("data/dracula.txt"));
+		
+		for (String text : d){
+		    System.out.println("Aktuelles Element: " + text);
+		}
+	}
+
+	@Override
+	public Iterator<String> iterator() {
+		return new Iterator<String>(){
+
+			private int pos = 0;
+			
+			@Override
+			public boolean hasNext() {
+				return pos < text.length;
+			}
+
+			@Override
+			public String next() {
+				return text[pos++];
+			}
+		};
 	}
 	
 }
