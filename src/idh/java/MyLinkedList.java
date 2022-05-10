@@ -10,15 +10,23 @@ public class MyLinkedList<T> implements List<T> {
 
 	/**
 	 * We only need to store the very first element of our list, 
-	 * because it will now whether there is a next element.
+	 * because it will know whether there is a next element.
 	 */
 	ListElement first;
 	
 	
 	@Override
 	public int size() {
-		// TODO Implement!
-		return 0;
+		int counter = 0;
+		if (first == null) {
+			return counter = 0;
+		}
+		ListElement pointer = first;
+		while (pointer.next != null) {
+			counter++;
+			pointer = pointer.next;
+		}
+		return counter;
 	}
 
 	@Override
@@ -28,7 +36,13 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Implement!
+		ListElement pointer = first;
+		while(pointer.next != null) {
+			if(pointer.equals(o)) {
+				return true;
+			}
+			pointer = pointer.next;
+		}
 		return false;
 	}
 
@@ -54,8 +68,16 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Implement!
-		return null;
+		Object[] objArr = new Object[this.size()];
+		ListElement current = first;
+		for (int i = 0; i < objArr.length; i++) {
+			while (current.next != null) {
+				current = current.next;
+				objArr[i] = this.get(i);
+			}
+		}
+
+		return objArr;
 	}
 
 	@Override
@@ -82,7 +104,10 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean remove(Object o) {
-		// TODO: Implement
+		if (this.contains(o)) {
+			o = null;
+			return true;
+		}
 		return false;
 	}
 
@@ -103,8 +128,9 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
-		// TODO Implement!
-		return false;
+		for (T t : c) 
+			this.add(t);
+		return true;
 	}
 
 	@Override
@@ -138,7 +164,7 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public void add(int index, T element) {
-		// TODO: Implement
+		first = new ListElement(element);
 	}
 
 	@Override
