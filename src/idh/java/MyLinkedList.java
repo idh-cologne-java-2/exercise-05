@@ -14,8 +14,8 @@ public class MyLinkedList<T> implements List<T> {
 	ListElement first;
 
 	/**
-	 * Like method last() iterates over the list. Int size serves as a counter that
-	 * increases per iteration @
+	 * Like method last() this method iterates over the list. Int size serves as a
+	 * counter that increases per iteration
 	 */
 	@Override
 	public int size() {
@@ -121,13 +121,6 @@ public class MyLinkedList<T> implements List<T> {
 	@Override
 	public boolean remove(Object o) {
 		// TODO: Implement
-		ListElement current = first;
-
-//		while (current.next != null) {
-//			if (current.equals(o))
-//				return true;
-//				current = current.next;
-//		}
 		if (this.contains(o)) {
 			o = null;
 			return true;
@@ -151,10 +144,17 @@ public class MyLinkedList<T> implements List<T> {
 		return true;
 	}
 
+	/**
+	 * Inserts all of the elements in the specified collection into this list at the
+	 * specified position (optional operation).
+	 */
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
 		// TODO Implement!
-		return false;
+		for (T t : c)
+			this.add(index++, t);
+		return true;
+
 	}
 
 	@Override
@@ -180,33 +180,78 @@ public class MyLinkedList<T> implements List<T> {
 		return getElement(index).value;
 	}
 
+	/**
+	 * Replaces the element at the specified position in this list with the
+	 * specified element (optional operation).
+	 */
 	@Override
 	public T set(int index, T element) {
 		// TODO: Implement
-		return null;
+		return getElement(index).value = element;
 	}
 
 	@Override
-	public void add(int index, T element) {
+	public void add(int index, T element) { //Kein plan, obs funzt
 		// TODO: Implement
+		ListElement newListElement = new ListElement(element);
+
+		if (first == null)
+			first = newListElement;
+		else
+			for (int j = 0; j < this.size(); j++) {
+				if(j==index) {
+					this.remove(j);
+					this.add(element);
+				}
+			}
+			
 	}
 
+	/**
+	 *Removes the element at the specified position in this list (optional operation). 
+	 *Shifts any subsequent elements to the left (subtracts one from their indices). 
+	 *Returns the element that was removed from the list.
+	 */
 	@Override
 	public T remove(int index) {
 		// TODO: Implement
-		return null;
+		T current = (T) first;
+		for (int i = 0; i < this.size(); i++) {
+			while(current != null) {
+				if(i==index) {
+					this.get(i);
+					this.set(i--, null);
+				}
+			}			
+		}
+		return current;
+
 	}
 
 	@Override
-	public int indexOf(Object o) {
+	public int indexOf(Object o) {//I'm lost
 		// TODO: Implement
-		return 0;
+		int index = 0;
+		for (int j = 0; j < this.size(); j++) {
+			if (this.contains(o))
+				index = j;		
+		}
+		return index;
 	}
 
 	@Override
-	public int lastIndexOf(Object o) {
+	public int lastIndexOf(Object o) { //guess this could work? 
 		// TODO: Implement
-		return 0;
+		int index = 0;
+		if (first == null)
+			return 0;
+		ListElement current = first;
+
+		while (current.next != null) {
+			current = current.next;
+			index++;
+		}
+		return index;
 	}
 
 	@Override
@@ -310,7 +355,7 @@ public class MyLinkedList<T> implements List<T> {
 	 * specified index position.
 	 * 
 	 * @param index
-	 * @return
+	 * @return element
 	 */
 	private ListElement getElement(int index) {
 		if (isEmpty())
