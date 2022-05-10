@@ -132,13 +132,31 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: Implement
+		if (first == null) {
+			throw new UnsupportedOperationException();
+		}else {
+			ListElement current = first;
+			while(current.next != null && index > 0) {
+				current = current.next;
+				index--;
+			}
+			if(index == 0)
+				current.value = element;
+		}
 		return null;
 	}
 
 	@Override
 	public void add(int index, T element) {
-		// TODO: Implement
+		if (first == null) {
+			first = new ListElement(element);
+		}else {
+			ListElement current = first;
+			while(current.next != null) {
+				current = current.next;
+			}
+			current.next = new ListElement(element);
+		}
 	}
 
 	@Override
