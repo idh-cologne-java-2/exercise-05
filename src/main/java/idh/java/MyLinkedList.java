@@ -40,7 +40,7 @@ public class MyLinkedList<T> implements List<T> {
         return new Iterator<>() {
             ListElement next = first;
 
-            //gibt nächstes Element, wenn Nächstes nicht gleich null ist
+            //gibt es ein nächstes Element ? Ja, wenn das nächste nicht gleich null ist
             @Override
             public boolean hasNext() {
                 return next != null;
@@ -257,11 +257,15 @@ public class MyLinkedList<T> implements List<T> {
     @Override
     public T remove(int index) {
 
+        //Element an bestimmter Stelle entfernen
         T ret;
+
+        //Für das erste Element in Liste
         if (index == 0) {
             ret = first.value;
             first = first.next;
             size--;
+            //Returnwert ist das Element das vorher an der Stelle war
             return ret;
         }
         ListElement previous;
@@ -273,6 +277,7 @@ public class MyLinkedList<T> implements List<T> {
         //fange bei 1 an, da Sonderfall i=0 abgehandelt
         for (int i = 1; i < size; i++) {
 
+            //Element aus der Mitte der Liste entfernen
             if (index == i) {
                 ret = current.value;
                 previous.next = current.next;
@@ -326,7 +331,8 @@ public class MyLinkedList<T> implements List<T> {
 
     @Override
     public ListIterator<T> listIterator() {
-        return new ListIterator<T>() {
+        return new ListIterator<>() {
+
 
             ListElement previous = null;
             ListElement next = first;
@@ -334,11 +340,14 @@ public class MyLinkedList<T> implements List<T> {
 
             @Override
             public boolean hasNext() {
+                //wenn nächstes Element nicht gleich null ist (also existiert) dann hat Iterator nächstes Element
                 return next != null;
             }
 
             @Override
+            //gib mir das nächste Element aus der Liste
             public T next() {
+
                 previous = next;
                 T ret = next.value;
                 next = next.next;
@@ -386,20 +395,26 @@ public class MyLinkedList<T> implements List<T> {
 
     @Override
     public ListIterator<T> listIterator(int index) {
-
+        //Index hier vom ersten Element das vom ListIterator zurückgegeben wird
         throw new UnsupportedOperationException();
     }
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-
+        //gibt eine Subliste (Teilliste) zurück von from (inklusiv) zu to (exklusiv)
         throw new UnsupportedOperationException();
     }
 
     private class ListElement {
+        //ListElement (Kasten mit einem Wert und einem Zeiger auf nächstes Element)
+
+        //Wert des Elements
         T value;
+
+        //Zeiger auf nächstes Element in Liste
         ListElement next;
 
+        //Konstruktor
         ListElement(T value) {
 
             this.value = value;
@@ -444,17 +459,26 @@ public class MyLinkedList<T> implements List<T> {
     public static void main(String[] args) {
 
         MyLinkedList<String> ll = new MyLinkedList<>();
+        ArrayList <String> zweiteListe = new ArrayList<>();
 
         ll.add("Hallo");
         ll.add("Welt");
 
+        zweiteListe.add("Du");
+        zweiteListe.add("Schoene");
+
         String st = ll.getElement(0).value;
+
+        ll.remove("Hallo");
         System.out.println(st);
 
-        ll.remove("Welt");
+        ll.addAll(zweiteListe);
 
         for (String s : ll) {
             System.out.println(s);
         }
+
+
+
     }
 }
