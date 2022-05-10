@@ -14,11 +14,15 @@ public class MyLinkedList<T> implements List<T> {
 	 */
 	ListElement first;
 	
-	
 	@Override
 	public int size() {
-		// TODO Implement!
-		return 0;
+		int counter = 0;
+		ListIterator<T> li = listIterator();
+		while(li.hasNext()) {
+			li.next();
+			counter++;
+		}
+		return counter;
 	}
 
 	@Override
@@ -28,7 +32,13 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Implement!
+		ListIterator<T> li = listIterator();
+		while(li.hasNext()) {
+			if(li.equals(o)) {
+				return true;
+			}
+			li.next();
+		}
 		return false;
 	}
 
@@ -54,8 +64,15 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Implement!
-		return null;
+		MyLinkedList<String> ll = new MyLinkedList<String>();
+		int size = ll.size();
+		Object[] listArray = new Object[size];
+		ListIterator<T> li = listIterator();
+		for(int i = 0; i < size; i++) {
+			listArray[i] = li;
+			li.next();
+		}
+		return listArray;
 	}
 
 	@Override
@@ -82,7 +99,14 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean remove(Object o) {
-		// TODO: Implement
+		ListIterator<T> li = listIterator();
+		while(li.hasNext()) {
+			if(li.equals(o)) {
+				li.remove();
+				return true;
+			}
+			li.next();
+		}
 		return false;
 	}
 
@@ -103,7 +127,13 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
-		// TODO Implement!
+		ListIterator<T> li = listIterator();
+		while(li.hasNext()) {
+			if(li.nextIndex() == index) {
+				//Hier müsste noch etwas stehen
+			}
+			li.next();
+		}
 		return false;
 	}
 
@@ -132,31 +162,79 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: Implement
-		return null;
+		ListIterator<T> li = listIterator();
+		for(int i = 1; i < index; i++) {
+			li.next();
+		}
+		li.set(element);
+		return element;
 	}
 
 	@Override
 	public void add(int index, T element) {
-		// TODO: Implement
+		/*ListIterator<T> li = listIterator();
+		T elValue;
+		for(int i = 1; i < index; i++) {
+			li.next();
+			
+		}
+		while(li.hasNext()) {
+			elValue = ;
+			li.set(element);
+			li.next();
+		}*/
+		
+		/*ListElement pushElement;
+		ListElement ListElementValue = new ListElement(element);
+		
+		pushElement = getElement(index);
+		getElement(index-1).next = ListElementValue;
+		int m = 1;
+		while(getElement(index+m)) {
+			
+		}*/
+			
+		//Leider keine Lösung gefunden
+		
 	}
 
 	@Override
 	public T remove(int index) {
-		// TODO: Implement
-		return null;
+		ListIterator<T> li = listIterator();
+		for(int i = 1; i < index; i++) {
+				li.next();
+		}
+		li.remove();
+		return getElement(index).value;
 	}
 
 	@Override
 	public int indexOf(Object o) {
-		// TODO: Implement
-		return 0;
+		ListIterator<T> li = listIterator();
+		int counter = 1;
+		while(li.hasNext()) {
+			if(li.equals(o)) {
+				return counter;
+			}
+			counter++;
+			li.next();
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		// TODO: Implement
-		return 0;
+		ListIterator<T> li = listIterator();
+		int occurence = -1;
+		int counter = 1;
+		while(li.hasNext()) {
+			if(li.equals(o)) {
+				occurence = counter;
+			}
+			counter++;
+			li.next();
+		}
+		return occurence;
 	}
 
 	@Override
@@ -273,9 +351,17 @@ public class MyLinkedList<T> implements List<T> {
 
 	public static void main(String[] args) {
 		MyLinkedList<String> ll = new MyLinkedList<String>();
-		ll.add("Hallo");
-		ll.add("Welt");
+		ll.add("Hallo1");
+		ll.add("Welt1");
+		ll.add("Hallo5");
+		ll.add("Welt5");
+		ll.add("Hallo8");
+		ll.add("Welt8");
+		
+		ll.remove(3);
+		System.out.println(ll.size());
 		ll.get(0);
+
 		for (String s : ll) {
 			System.out.println(s);
 		}
