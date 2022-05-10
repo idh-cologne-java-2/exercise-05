@@ -9,21 +9,21 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
+import java.util.NoSuchElementException;
 
 public class MyLinkedList<T> implements List<T> {
 
 	/**
-	 * We only need to store the very first element of our list, 
-	 * because it will now whether there is a next element.
+	 * We only need to store the very first element of our list, because it will now
+	 * whether there is a next element.
 	 */
 	ListElement first;
-	
-	
+	int size = 0;
+
 	@Override
 	public int size() {
-		// TODO Implement!
-		return 0;
+		// Returns the size of the list
+		return size;
 	}
 
 	@Override
@@ -33,7 +33,16 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Implement!
+		// Implemented!
+		ListElement current = first;
+
+		while (current.next != null) {
+			if (current.equals(o)) {
+				return true;
+			}
+			current = current.next;
+		}
+
 		return false;
 	}
 
@@ -41,7 +50,7 @@ public class MyLinkedList<T> implements List<T> {
 	public Iterator<T> iterator() {
 		return new Iterator<T>() {
 			ListElement next = first;
-			
+
 			@Override
 			public boolean hasNext() {
 				return next != null;
@@ -53,14 +62,21 @@ public class MyLinkedList<T> implements List<T> {
 				next = next.next;
 				return ret;
 			}
-			
+
 		};
 	}
 
 	@Override
 	public Object[] toArray() {
-		// TODO Implement!
-		return null;
+		// Implemented!
+		Object[] objArr = new Object[this.size()];
+		ListElement current = first;
+		int n = 0;
+		while (current.next != null) {
+			objArr[n++] = current;
+			current = current.next;
+		}
+		return objArr;
 	}
 
 	@Override
@@ -87,35 +103,41 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean remove(Object o) {
-		// TODO: Implement
+		// Implemented!
+		if (this.contains(o)) {
+			o = null;
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
 		for (Object o : c)
-			if (! contains(o))
+			if (!contains(o))
 				return false;
 		return true;
 	}
 
 	@Override
 	public boolean addAll(Collection<? extends T> c) {
-		for (T t : c) 
+		for (T t : c)
 			this.add(t);
 		return true;
 	}
 
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
-		// TODO Implement!
-		return false;
+		// Implemented!
+		for (T t : c)
+			this.add(t);
+		return true;
 	}
 
 	@Override
 	public boolean removeAll(Collection<?> c) {
 		boolean r = true;
-		for (Object o : c) 
+		for (Object o : c)
 			r = r || this.remove(o);
 		return r;
 	}
@@ -137,30 +159,73 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: Implement
+		// Implemented!
+		if (first == null) {
+			throw new NoSuchElementException();
+		} else {
+			ListElement current = first;
+			while (current.next != null && index > 0) {
+				current = current.next;
+				index--;
+			}
+			if (index == 0)
+				current.value = element;
+
+		}
 		return null;
 	}
 
 	@Override
 	public void add(int index, T element) {
-		// TODO: Implement
+		// Implemented!
+		first = new ListElement(element);
 	}
 
 	@Override
 	public T remove(int index) {
-		// TODO: Implement
+		// Implemented!
+		ListElement current = first;
+		int i = 0;
+
+		while (current.next != first) {
+			if (i == index) {
+				current.value = null;
+				return (T) current;
+			}
+			i++;
+			current = current.next;
+		}
 		return null;
 	}
 
 	@Override
 	public int indexOf(Object o) {
-		// TODO: Implement
-		return 0;
+		// Implemented!
+		ListElement current = first;
+		for (int i = 0; i < size; i++) {
+			if (current.value.equals(o)) {
+				return i;
+			}
+			current = current.next;
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		// TODO: Implement
+		// Implemented!
+		ListElement current = first;
+		int i = 0;
+		while (current.next != null) {
+			if (current.value == o) {
+				if (current.next.value == o) {
+					return i + 1;
+				}
+				return i;
+			}
+			i++;
+
+		}
 		return 0;
 	}
 
@@ -171,7 +236,7 @@ public class MyLinkedList<T> implements List<T> {
 			ListElement previous = null;
 			ListElement next = first;
 			int index;
-			
+
 			@Override
 			public boolean hasNext() {
 				return next != null;
@@ -198,12 +263,12 @@ public class MyLinkedList<T> implements List<T> {
 
 			@Override
 			public int nextIndex() {
-				return index+1;
+				return index + 1;
 			}
 
 			@Override
 			public int previousIndex() {
-				return index-1;
+				return index - 1;
 			}
 
 			@Override
@@ -218,9 +283,9 @@ public class MyLinkedList<T> implements List<T> {
 
 			@Override
 			public void add(T e) {
-				throw new UnsupportedOperationException();				
+				throw new UnsupportedOperationException();
 			}
-			
+
 		};
 	}
 
@@ -233,42 +298,46 @@ public class MyLinkedList<T> implements List<T> {
 	public List<T> subList(int fromIndex, int toIndex) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	private class ListElement {
 		T value;
 		ListElement next;
-		
+
 		ListElement(T value) {
 			this.value = value;
 		}
 	}
-	
+
 	/**
-	 * Internal method that iterates over the list, returning the last element (i.e., the one whose next field is null)
+	 * Internal method that iterates over the list, returning the last element
+	 * (i.e., the one whose next field is null)
+	 * 
 	 * @return
 	 */
 	private ListElement last() {
 		if (first == null)
 			return null;
 		ListElement current = first;
-		
-		while(current.next != null) {
+
+		while (current.next != null) {
 			current = current.next;
 		}
 		return current;
 	}
-	
-	/** 
-	 * Internal method to get the list element (not the value) of the list at the specified index position.
+
+	/**
+	 * Internal method to get the list element (not the value) of the list at the
+	 * specified index position.
+	 * 
 	 * @param index
 	 * @return
 	 */
 	private ListElement getElement(int index) {
-		if (isEmpty()) 
+		if (isEmpty())
 			return null;
 		ListElement current = first;
-		while(current != null) {
-			if (index == 0) 
+		while (current != null) {
+			if (index == 0)
 				return current;
 			index--;
 			current = current.next;
