@@ -27,6 +27,7 @@ public class MyLinkedList<T> implements List<T> {
 			i++;
 			current = current.next;
 		}
+		
 		return i;
 	}
 
@@ -69,8 +70,16 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Implement!
-		return null;
+		 Object[] array = new Object[this.size()]; 
+		 ListElement current = first; 
+		 int i = 0; 
+		 
+		 while(current.next!= null) {
+			 array[i++] = current;
+			current = current.next; 
+		 }
+		 
+		 return array;
 	}
 
 	@Override
@@ -97,7 +106,14 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean remove(Object o) {
-		// TODO: Implement
+		ListElement current = first; 
+		
+		while (current.next != null ) {
+			if(current.equals(o)) {
+				current = null;
+			}
+			current = current.next;
+		}
 		return false;
 	}
 
@@ -118,7 +134,7 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
-		// TODO Implement!
+		// TODO Implement! //Was ist hier gefordert?
 		return false;
 	}
 
@@ -147,7 +163,7 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: Implement
+		// TODO: Implement //Was ist hier gefordert?
 		return null;
 	}
 
