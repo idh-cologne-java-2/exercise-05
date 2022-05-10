@@ -1,3 +1,8 @@
+/**
+ * @author UntoastedToast
+ *
+ */
+
 package idh.java;
 
 import java.io.File;
