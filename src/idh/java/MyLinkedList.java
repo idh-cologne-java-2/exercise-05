@@ -1,3 +1,4 @@
+// Tim Schäfer 7380391
 package idh.java;
 
 import java.util.Collection;
@@ -17,8 +18,21 @@ public class MyLinkedList<T> implements List<T> {
 	
 	@Override
 	public int size() {
-		// TODO Implement!
-		return 0;
+		int length = 1;
+		
+		if(first == null) {
+			
+			return 0;
+			
+		}
+		
+		ListElement current = first;
+		while(current.next != null) {
+			length++;
+			current = current.next;
+		}
+		
+		return length;
 	}
 
 	@Override
@@ -28,7 +42,17 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Implement!
+		ListElement current = first;
+		while(current.next != null) {
+			if(current.value == o) {
+				return true;
+			}
+			current= current.next;
+		}
+		
+		if(current.value == o) {
+			return true;
+		}
 		return false;
 	}
 
@@ -54,8 +78,16 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Implement!
-		return null;
+		Object[] result = new Object[size()];
+		
+		ListElement current = first;
+		int i = 0;
+		while(current.next != null) {
+			result[i] = current;
+			i++;
+			current = current.next;
+		}
+		return result;
 	}
 
 	@Override
@@ -82,7 +114,44 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean remove(Object o) {
-		// TODO: Implement
+		
+		// wenn  nur ein object in der liste
+		if(first != null && first.next == null) {
+			if(first.value == o) {
+				first = null;
+				return true;
+			}
+		}
+		//minestens zwei in der liste?
+		if(first != null && first.next != null) {
+			
+		
+			ListElement current = first.next;
+			ListElement bevor = first;
+		
+		// ist dass erste Element das gesuchte?
+			if(bevor.value == o) {
+				if(current != null) {
+					first = current;
+					return true;
+				}else {
+					return false;
+				}
+			
+			}
+		// restliche liste wird durchlaufen 
+			while(current.next != null) {
+				if(current.value == o) {
+					bevor.next = current.next; 
+					return true;
+				}
+				
+				bevor = current;
+				current= current.next;
+			
+			}
+		}
+		
 		return false;
 	}
 
@@ -103,8 +172,30 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
-		// TODO Implement!
-		return false;
+		MyLinkedList<T> helpList = new MyLinkedList<T>();
+		
+		for (T t : c) { 
+			helpList.add(t);
+		}
+		
+		ListElement bevor = first;
+		ListElement current = first.next;
+		int i = 1;
+		ListElement lastFromHelpList = helpList.last();
+
+		if(index == 0) {
+			this.first = helpList.first;
+		}
+		
+		while(current.next != null && i < index) {
+			current = current.next;
+			bevor = bevor.next;
+			i++;
+		}
+		bevor.next = helpList.first;
+		lastFromHelpList.next = current;
+		
+		return true;
 	}
 
 	@Override
@@ -132,31 +223,108 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: Implement
-		return null;
+		
+		ListElement current = first;
+		T changedObject;
+		int i = 0; 
+		
+		while(current.next != null && i < index) {
+			current = current.next;
+			i++;
+		}
+		
+		changedObject = current.value;
+		current.value = element;
+		
+		return changedObject;
 	}
 
 	@Override
 	public void add(int index, T element) {
-		// TODO: Implement
+		ListElement newElement = new ListElement(element);
+		
+		ListElement bevor = first;
+		ListElement current = first.next;
+		int i = 1;
+		
+		if(index == 0) {
+			newElement.next = first;
+			first = newElement;
+			return;
+		}
+		
+		while(current.next != null && i < index) {
+			current = current.next;
+			bevor = bevor.next;
+			i++;
+		}
+		
+		newElement.next = current;
+		bevor.next = newElement;
+		
+		
 	}
 
 	@Override
 	public T remove(int index) {
-		// TODO: Implement
-		return null;
+		
+		ListElement current = first.next;
+		ListElement bevor = first;
+		
+		if(index == 0) {
+			first = current;
+			return bevor.value;
+		}
+		
+		int i = 1;
+		
+		while(current.next != null && i < index) {
+			current = current.next;
+			bevor = bevor.next;
+			i++;
+		}
+		
+		bevor.next = current.next;
+		return current.value;
 	}
 
 	@Override
 	public int indexOf(Object o) {
-		// TODO: Implement
-		return 0;
+		
+		ListElement current = first;
+		int i = 0;
+		
+		while(current.next != null) {
+			if(current.value != o) {
+				i++;	
+			}else {
+				return i;
+			}
+			current = current.next;
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		// TODO: Implement
-		return 0;
+		int index = -1;
+		int zaehler = 0;
+		ListElement current = first;
+		
+		while(current.next != null) {
+			if(current.value == o) {
+				index = zaehler;
+			}
+			current = current.next;
+			zaehler++;
+		}
+		
+		if(current.value == o) {
+			index = zaehler;
+		}
+		
+		return index;
+		
 	}
 
 	@Override
@@ -275,9 +443,27 @@ public class MyLinkedList<T> implements List<T> {
 		MyLinkedList<String> ll = new MyLinkedList<String>();
 		ll.add("Hallo");
 		ll.add("Welt");
+		ll.add("kannst");
+		ll.add("du");
+		ll.add("mich");
+		ll.add("Welt");
+		ll.add("hoeren");
+		ll.add("Welt");
+		ll.add("hoeren");
+		ll.add(2,"All");
 		ll.get(0);
+		ll.set(3, "koennen");
+		ll.remove(4);
+		ll.remove("du");
+		
 		for (String s : ll) {
 			System.out.println(s);
 		}
+		
+		System.out.println(ll.size());
+		System.out.println(ll.indexOf("Welt"));
+		System.out.println(ll.contains("hoeren"));
+		System.out.println(ll.lastIndexOf("Welt"));
+		
 	}
 }
