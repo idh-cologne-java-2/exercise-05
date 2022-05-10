@@ -14,11 +14,12 @@ public class MyLinkedList<T> implements List<T> {
 	 */
 	ListElement first;
 	
+	private int nextInsertPosition;
+	private T[] data;
 	
 	@Override
 	public int size() {
-		// TODO Implement!
-		return 0;
+		return nextInsertPosition;
 	}
 
 	@Override
@@ -28,7 +29,9 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Implement!
+		for (int i = 0; i < data.length; i++) {
+			if (o.toString().equals(data[i].toString())) return true;
+		}
 		return false;
 	}
 
@@ -54,8 +57,9 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Implement!
-		return null;
+		this.data = data;
+		this.nextInsertPosition = data.length;
+			return null;
 	}
 
 	@Override
@@ -82,7 +86,12 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean remove(Object o) {
-		// TODO: Implement
+		for (int i = 0; i < nextInsertPosition; i++) {
+			if(data[i].equals(o)) {
+				remove (i);
+				break;
+			}
+		}
 		return false;
 	}
 
@@ -103,8 +112,18 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
-		// TODO Implement!
-		return false;
+		Object[] a = c.toArray();
+	    int numNew = a.length;
+	    int size = 0;
+	    Object elementData = null;
+	    ensureCapacityInternal(size + numNew);  // Increments modCount
+	    System.arraycopy(a, 0, elementData, size, numNew);
+	    size += numNew;
+	    return numNew != 0;
+	
+	}
+	
+	private void ensureCapacityInternal(int i) {
 	}
 
 	@Override
@@ -132,31 +151,54 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: Implement
+		if (isIndexValid(index)) {
+			data[index] = element;
+		} else {
+			System.out.println(index + "not found");;
+		}
 		return null;
+	}
+	
+	private boolean isIndexValid(int index) {
+		return index < nextInsertPosition;
 	}
 
 	@Override
 	public void add(int index, T element) {
-		// TODO: Implement
+		if (full()) grow(); //überprüfen, ob Platz ist; wenn nicht, vergrößern (s.u.)
+		data[nextInsertPosition] = element; //den übergebenen String an die nächste freie Stelle schreiben
+		nextInsertPosition++;
+	}
+	
+	private boolean full() {
+		return data.length <= nextInsertPosition;
+	}
+	
+	private void grow() {
+	
 	}
 
 	@Override
 	public T remove(int index) {
-		// TODO: Implement
-		return null;
+		nextInsertPosition--;
+			return null;
 	}
 
 	@Override
 	public int indexOf(Object o) {
-		// TODO: Implement
+		for (int i = 0; i < nextInsertPosition; i++) {
+			if(data [i].equals(o)) {
+				return (i);
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		// TODO: Implement
-		return 0;
+		List<T> Obj = null;
+		int lastIndexOf = Obj.lastIndexOf('o');
+		return lastIndexOf;
 	}
 
 	@Override
@@ -236,6 +278,18 @@ public class MyLinkedList<T> implements List<T> {
 		ListElement(T value) {
 			this.value = value;
 		}
+
+		public int size() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		public Object get() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	
 	}
 	
 	/**
