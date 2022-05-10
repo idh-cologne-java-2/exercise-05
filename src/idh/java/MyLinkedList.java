@@ -17,8 +17,16 @@ public class MyLinkedList<T> implements List<T> {
 	
 	@Override
 	public int size() {
-		// TODO Implement!
-		return 0;
+		int counter = 0;
+		if (first == null) {
+			return counter = 0;
+		}
+		ListElement where = first;
+		while (where.next != null) {
+			counter++;
+			where = where.next;
+		}
+		return counter;
 	}
 
 	@Override
@@ -28,7 +36,15 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Implement!
+		ListElement where = first;
+		while (where.next != null) {
+			if (where == o) {
+				return true;				
+			}
+			else {
+			where = where.next;
+			}
+		}
 		return false;
 	}
 
@@ -54,8 +70,13 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Implement!
-		return null;
+		Object[] newArr = new Object[size()];
+		ListElement obj = first;
+		for (int i = 0; i < newArr.length; i++) {
+				newArr[i] = obj;
+				i++;
+		}
+		return newArr;
 	}
 
 	@Override
@@ -82,7 +103,13 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean remove(Object o) {
-		// TODO: Implement
+		ListElement where = first;
+		while (where.next != null) {
+			if (where == o) {
+				where = null;
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -103,8 +130,16 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
-		// TODO Implement!
-		return false;
+		ListElement where = first;
+		
+		for (int i=0; i<index; i++) {
+			if (where.next != null) {
+				where = where.next;
+			}
+		}
+		for (T t : c) 
+			where.add(t);
+		return true;
 	}
 
 	@Override
@@ -132,25 +167,42 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: Implement
+		getElement(index).value = element;
 		return null;
 	}
 
 	@Override
 	public void add(int index, T element) {
-		// TODO: Implement
+		ListElement where = first;
+		
+		for (int i=0; i<index; i++) {
+			if (where.next != null) {
+				where = where.next;
+			}
+		}
+		
+		ListElement newListElement = new ListElement(element);
+		where.next = newListElement;
 	}
 
 	@Override
 	public T remove(int index) {
-		// TODO: Implement
+		getElement(index).value = null;
 		return null;
 	}
 
 	@Override
 	public int indexOf(Object o) {
-		// TODO: Implement
-		return 0;
+		ListElement where = first;
+		int counter = 0;
+		while(where.next != null) {
+			if(where.equals(o)) {
+				return counter;
+			}
+			counter++;
+			where = where.next;
+		}
+		return -1;
 	}
 
 	@Override
