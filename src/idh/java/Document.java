@@ -3,9 +3,23 @@ package idh.java;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 
-public class Document {
+
+
+
+
+public class Document implements Iterable<String>{  //macht das dokument iterierbar
 	String documentText;
+	
+	
+	
+	
+	
+	static List<String> tokens = new ArrayList<>();
 
 	public static Document readFromFile(File f) throws IOException {
 		FileReader fileReader = new FileReader(f);
@@ -23,14 +37,37 @@ public class Document {
 	
 	public String getDocumentText() {
 		return documentText;
+		
+		
 	}
 
 	public void setDocumentText(String documentText) {
 		this.documentText = documentText;
+		
+		
 	}
 	
-	public static final void main(String[] args) throws IOException {
+	
+	
+	public static final void main(String[] args) throws IOException {   	//schleife eingefügt um tokens auszugeben
 		Document d = Document.readFromFile(new File("data/dracula.txt"));
+		
+		StringTokenizer t = new StringTokenizer(d.documentText);
+	     while (t.hasMoreTokens()) {
+	         tokens.add(t.nextToken());
+	     }
+	     
+	     Iterator<String> iter = tokens.iterator();
+			while (iter.hasNext()) {
+				System.out.println(iter.next());
+			}
+
+	}
+	
+	
+	@Override
+	public Iterator<String> iterator() {
+		return this.iterator();
 	}
 	
 }
