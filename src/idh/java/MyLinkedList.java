@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 
 public class MyLinkedList<T> implements List<T> {
@@ -13,12 +14,14 @@ public class MyLinkedList<T> implements List<T> {
 	 * because it will now whether there is a next element.
 	 */
 	ListElement first;
+	int size = 0;
 	
+	// gibt die Größe der Liste zurück
 	
 	@Override
 	public int size() {
 		// TODO Implement!
-		return 0;
+		return size;
 	}
 
 	@Override
@@ -26,9 +29,18 @@ public class MyLinkedList<T> implements List<T> {
 		return first == null;
 	}
 
+	//
 	@Override
 	public boolean contains(Object o) {
 		// TODO Implement!
+		ListElement current = first;
+		
+		while(current.next != null) {
+			if(current.equals(o)) {
+				return true;
+			}
+			current = current.next;
+		}
 		return false;
 	}
 
@@ -55,7 +67,15 @@ public class MyLinkedList<T> implements List<T> {
 	@Override
 	public Object[] toArray() {
 		// TODO Implement!
-		return null;
+		Object[] objArr = new Object[this.size()];
+		ListElement current = first;
+		for(int i = 0; i < objArr.length; i++) {
+			while(current.next != null) {
+				current = current.next;
+				objArr[i] = this.get(i);
+			}
+		}
+		return objArr;
 	}
 
 	@Override
@@ -80,9 +100,14 @@ public class MyLinkedList<T> implements List<T> {
 		return true;
 	}
 
+	// it removes the specified object from the list if it contains this object
 	@Override
 	public boolean remove(Object o) {
 		// TODO: Implement
+		if(this.contains(o)) {
+			o = null;
+			return true;
+		}
 		return false;
 	}
 
@@ -101,9 +126,13 @@ public class MyLinkedList<T> implements List<T> {
 		return true;
 	}
 
+	// add all elements from collection c into the list at a certain index
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
 		// TODO Implement!
+		for(T t: c) {
+			this.add(index++, t);
+		}
 		return false;
 	}
 
@@ -130,33 +159,78 @@ public class MyLinkedList<T> implements List<T> {
 		return getElement(index).value;
 	}
 
+	// set element to specific position
 	@Override
 	public T set(int index, T element) {
 		// TODO: Implement
+		if(first == null) {
+			throw new NoSuchElementException();
+		} else {
+			ListElement current = first;
+			while(current.next != null && index > 0) {
+				current = current.next;
+				index--;
+			}
+			if(index == 0) {
+				current.value = element;
+			}
+		}
+		
 		return null;
 	}
 
+	// adds an element at given position of the list
 	@Override
 	public void add(int index, T element) {
 		// TODO: Implement
+		first = new ListElement(element);
 	}
 
 	@Override
 	public T remove(int index) {
 		// TODO: Implement
+		ListElement current = first;
+		int i = 0;
+		
+		while(current.next != first) {
+			if(i == index) {
+				current.value = null;
+					return (T) current;
+			}
+			i++;
+			current = current.next;
+		}
 		return null;
 	}
 
+	//returns the index of the specified element
 	@Override
 	public int indexOf(Object o) {
 		// TODO: Implement
-		return 0;
+		ListElement current = first;
+		for(int i = 0; i < size; i++) {
+			if(current.value.equals(o)) {
+				return i;
+			}
+			current = current.next;
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
 		// TODO: Implement
-		return 0;
+		ListElement current = first;
+		
+		// see if list contains object
+		int occurence = -1;
+		for(int i = 0; i < size; i++) {
+			if(current.value.equals(o)) {
+				occurence = i;
+			}
+			current = current.next;
+		}
+		return occurence;
 	}
 
 	@Override
