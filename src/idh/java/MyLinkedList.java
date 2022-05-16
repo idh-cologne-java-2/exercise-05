@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 
+
 public class MyLinkedList<T> implements List<T> {
 
 	/**
@@ -17,8 +18,7 @@ public class MyLinkedList<T> implements List<T> {
 	
 	@Override
 	public int size() {
-		// TODO Implement!
-		return 0;
+		return lastIndexOf(this.last()) + 1;
 	}
 
 	@Override
@@ -28,7 +28,11 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Implement!
+		for (Object nextObject : this) {
+			if (nextObject.equals(o)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -54,7 +58,10 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Implement!
+		Object[] retValue = new Object[this.size()];
+		for (int i = 0; i < retValue.length; i++) {
+			retValue[i] = this.get(i);
+		}
 		return null;
 	}
 
@@ -82,7 +89,12 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean remove(Object o) {
-		// TODO: Implement
+		for (int i = 0; i < this.size(); i++) {
+			if (getElement(i).equals(o)) {
+				getElement(i).next = getElement(i).next.next;
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -103,7 +115,12 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
-		// TODO Implement!
+		for (int i = 0; i < index; i++) {
+			this.add(null);
+		}
+		for (int i = 0; i < c.size(); i++) {
+			this.add(index+i, (T) c.toArray()[i]);
+		}
 		return false;
 	}
 
@@ -132,31 +149,59 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: Implement
 		return null;
 	}
 
 	@Override
 	public void add(int index, T element) {
-		// TODO: Implement
+		ListElement newListElement = new ListElement(element);
+		if (first == null) {
+			first = newListElement;
+			return;
+		}
+		this.add(null);
+		
+		ListElement temp1 = this.getElement(index).next;
+		this.getElement(index).next = this.getElement(index);
+		ListElement temp2 = this.getElement(index).next.next;
+		this.getElement(index).next.next = temp1;
+		temp1 = temp2;
+		
+		for (int i = index+1; i < this.size(); i++) {
+			temp2 = this.getElement(i).next.next;
+			this.getElement(i).next.next = temp1;
+			temp1 = temp2;
+		}
+		
+		this.getElement(index-1).next = newListElement;
 	}
 
 	@Override
 	public T remove(int index) {
-		// TODO: Implement
-		return null;
+		T retValue = this.get(index);
+		this.getElement(index).next = this.getElement(index).next.next;
+		return retValue;
 	}
 
 	@Override
 	public int indexOf(Object o) {
-		// TODO: Implement
-		return 0;
+		for (int i = 0; i < this.size(); i++) {
+			if (this.get(i).equals(o)) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		// TODO: Implement
-		return 0;
+		int retValue = 0;
+		for (int i = 0; i < this.size(); i++) {
+			if (this.get(i).equals(o)) {
+				retValue = i;
+			}
+		}
+		return retValue;
 	}
 
 	@Override
