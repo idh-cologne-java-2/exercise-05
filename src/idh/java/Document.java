@@ -51,20 +51,9 @@ public class Document implements Iterable<String>{
 	public Iterator<String> iterator() {
 		return this.iterator();
 
-		//	StringTokenizer tokenizer = new StringTokenizer(documentText);
-			
-		//	@Override
-		//	public boolean hasNext() {
-			//	return tokenizer.hasMoreTokens();
-			//}
-
-		//	@Override
-		//	public String next() {
-			//	return tokenizer.nextToken();
+	
 			}
-			
-		//};
+	
 	}
 	
 	
-//}
