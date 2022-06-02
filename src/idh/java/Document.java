@@ -1,11 +1,16 @@
 package idh.java;
-
 import java.io.File;
+
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
-public class Document {
-	String documentText;
+
+
+//Hier wurde das Interface Iterable<String> implementiert
+public class Document implements Iterable<String>{
+	static String documentText;
 
 	public static Document readFromFile(File f) throws IOException {
 		FileReader fileReader = new FileReader(f);
@@ -31,6 +36,35 @@ public class Document {
 	
 	public static final void main(String[] args) throws IOException {
 		Document d = Document.readFromFile(new File("data/dracula.txt"));
+		
+		//Aufgabe 1: Zur Erkennung einzelner Tokens, haben wir auf die Klasse StringTokenizer zugegriffen 
+		// und java.util StringTokenizer importiert (s.o)
+		
+	    StringTokenizer st = new StringTokenizer(documentText);
+	     while (st.hasMoreTokens()) {
+	         System.out.println(st.nextToken());
+	         
+	     }
+	 
+	}
+	@Override
+	public Iterator<String> iterator() {
+		return this.iterator();
+
+		//	StringTokenizer tokenizer = new StringTokenizer(documentText);
+			
+		//	@Override
+		//	public boolean hasNext() {
+			//	return tokenizer.hasMoreTokens();
+			//}
+
+		//	@Override
+		//	public String next() {
+			//	return tokenizer.nextToken();
+			}
+			
+		//};
 	}
 	
-}
+	
+//}
